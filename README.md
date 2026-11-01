@@ -87,7 +87,7 @@ The corpus covers the ninth parliamentary term and the first two years of the te
 | MEP profile: political affiliations | 1,277 | 1,277 | actors |
 | **Total** | **62,925** | **297,279** | |
 
-Documents are split into passages following their natural structure where possible. For example, transcripts are split into one passage per speech, and written questions are kept together with their answers. Longer documents are split into passages of fixed length (TODO: length). Procedure files and MEP profiles are database records, which are rendered as text from fixed templates without the use of a language model.
+Documents are split into passages following their natural structure where possible. For example, transcripts are split into one passage per speech, and written questions are kept together with their answers. Longer documents are split into passages of fixed length. Procedure files and MEP profiles are database records, which are rendered as text from fixed templates without the use of a language model.
 
 ## Topics
 
@@ -97,7 +97,7 @@ The 142 topics are based on questions asked by users of the ParliView platform. 
 
 The collection includes binary relevance judgements for 35,500 topic–passage pairs, pooled to depth 250 per topic (TODO: pooling method). Labels were generated with an LLM (OpenAI `gpt-6-luna`) and checked against expert annotation on a sample of pairs.
 
-## Data sources
+## Original data sources
 
 All distributed texts and records are taken from European Parliament sources:
 
