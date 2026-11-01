@@ -1,1 +1,114 @@
-# Parl-IR
+# ParlIR
+
+**ParlIR** is an English-language test collection for evaluating category-aware retrieval over the record of the European Parliament. It is designed for retrieval and retrieval-augmented generation (RAG) settings where documents that are equally on topic differ in what they can be used to establish. For example, a speech expresses a position, while an adopted text records a decision of Parliament.
+
+## Overview
+
+| Component | Size | Description |
+|---|---|---|
+| Corpus | 297,279 passages from 62,925 documents | 21 document types, 2 July 2019 to 16 July 2026 |
+| Evidence categories | 5 | Each document type is mapped to one or more categories |
+| Topics | 142 | Derived from real user questions, each with a target distribution over the categories |
+| Relevance judgements | 35,500 topic–passage pairs | Binary labels generated with an LLM, with a sample checked by an expert annotator |
+
+## Files and formats
+
+> **TODO:** final file names, formats, and field descriptions.
+
+### Corpus file
+
+> **TODO:** confirm fields.
+
+| Field | Description |
+|---|---|
+| `passage_id` | Unique passage identifier |
+| `doc_id` | Identifier of the source document |
+| `doc_type` | One of the 21 document types listed under [Corpus](#corpus) |
+| `categories` | Evidence categories of the passage |
+| `date` | Sitting or publication date, where available |
+| `url` | URL of the source document |
+| `text` | Passage text |
+
+### Topics file
+
+> **TODO:** confirm fields.
+
+| Field | Description |
+|---|---|
+| `topic_id` | Unique topic identifier |
+| `title` | Short form of the question |
+| `description` | Fuller statement of the information need |
+| `narrative` | Which document types can and cannot answer the topic |
+| `weights` | Target distribution over the five evidence categories (sums to 1) |
+
+### Judgements file
+
+> **TODO:** confirm format (e.g. TREC qrels: `topic_id 0 passage_id label`).
+
+## Evidence categories
+
+| Category | What it can be used to establish |
+|---|---|
+| Decision | What Parliament as a body decided or adopted, and what the adopted text says |
+| Position | What a political actor (Member, political group, party, or delegation) stands for, argued, or asked |
+| Proceedings | Where a file or meeting stands, what happened when, and what is under debate |
+| Actors | Who Members and political groups are, and what offices they hold |
+| Institution | How the EU and Parliament are constituted and how their rules and procedures work in general |
+
+## Corpus
+
+The corpus covers the ninth parliamentary term and the first two years of the tenth. All texts are in English.
+
+| Document type | Documents | Passages | Evidence categories |
+|---|---:|---:|---|
+| *Primary record* | | | |
+| Debate intervention | 2,112 | 78,357 | position, proceedings |
+| Verbatim report of proceedings | 4,549 | 16,026 | proceedings |
+| Minutes | 10,942 | 10,942 | decision, proceedings |
+| Text adopted | 2,969 | 12,772 | decision |
+| Report | 1,800 | 74,359 | proceedings |
+| Committee opinion | 1,400 | 22,575 | proceedings |
+| Motion for resolution | 2,775 | 18,067 | position |
+| Written question | 23,797 | 23,797 | position |
+| Explanation of vote | 137 | 137 | position |
+| *Secondary and reference material* | | | |
+| Press release | 1,509 | 2,041 | decision, position, proceedings |
+| Fact sheet | 177 | 814 | institution |
+| Rule | 251 | 259 | institution |
+| Annex | 8 | 24 | institution |
+| *Structured data rendered as text* | | | |
+| Procedure file | 3,177 | 15,955 | proceedings |
+| MEP profile: authored documents | 1,258 | 14,770 | actors, proceedings |
+| MEP profile: biography | 1,277 | 1,277 | actors |
+| MEP profile: committee memberships | 1,269 | 1,293 | actors |
+| MEP profile: delegation memberships | 1,259 | 1,264 | actors |
+| MEP profile: dossier roles | 771 | 1,062 | actors, proceedings |
+| MEP profile: other roles | 211 | 211 | actors |
+| MEP profile: political affiliations | 1,277 | 1,277 | actors |
+| **Total** | **62,925** | **297,279** | |
+
+Documents are split into passages following their natural structure where possible. For example, transcripts are split into one passage per speech, and written questions are kept together with their answers. Longer documents are split into passages of fixed length (TODO: length). Procedure files and MEP profiles are database records, which are rendered as text from fixed templates without the use of a language model.
+
+## Topics
+
+The 142 topics are based on questions asked by users of the ParliView platform. Each topic has a title, a description, a narrative, and a target distribution over the five evidence categories, giving the proportion of each kind of evidence a good answer would rely on. The target distributions were assigned by expert annotators.
+
+## Relevance judgements
+
+The collection includes binary relevance judgements for 35,500 topic–passage pairs, pooled to depth 250 per topic (TODO: pooling method). Labels were generated with an LLM (OpenAI `gpt-6-luna`) and checked against expert annotation on a sample of pairs.
+
+## Data sources
+
+All distributed texts and records are taken from European Parliament sources:
+
+- [European Parliament website](https://www.europarl.europa.eu/portal/en): verbatim reports, minutes, adopted texts, reports, opinions, motions, written questions, press releases, the [Fact Sheets on the European Union](https://www.europarl.europa.eu/factsheets/en/home), and the Rules of Procedure
+- [European Parliament Open Data Portal](https://data.europarl.europa.eu/en/developer-corner/opendata-api)
+- [Legislative Observatory (OEIL)](https://oeil.europarl.europa.eu)
+
+[ParlTrack](https://parltrack.org) was used only to identify which documents exist and where they are published. No ParlTrack data is included in this release.
+
+## Licence
+
+The data is released under the [Creative Commons Attribution 4.0 International (CC BY 4.0)](https://creativecommons.org/licenses/by/4.0/) licence. Source texts are reused under the European Parliament's open data policy. Attribution: © European Union, 2019–2026 – Source: European Parliament. Each passage includes the URL of its source document.
+
+> **TODO:** licence for code, if different.
