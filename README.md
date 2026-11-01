@@ -13,11 +13,24 @@
 
 ## Files and formats
 
-> **TODO:** final file names, formats, and field descriptions.
+| File | Format | Contents |
+|---|---|---|
+| `corpus.jsonl` | JSON Lines, one passage per line | 297,279 passages |
+| `topics.json` | JSON array | 142 topics with their target distributions |
+| `qrels.txt` | TREC qrels, space-separated | 35,500 topic–passage judgements |
+| `doc_type_categories.csv` | CSV | mapping from document type to evidence categories |
 
 ### Corpus file
 
-> **TODO:** confirm fields.
+| Field | Description |
+|---|---|
+| `passage_id` | Unique passage identifier |
+| `doc_id` | Identifier of the source document |
+| `doc_type` | One of the 21 document types listed under [Corpus](#corpus) |
+| `categories` | Evidence categories of the passage |
+| `date` | Sitting or publication date, where available |
+| `url` | URL of the source document |
+| `text` | Passage text |
 
 | Field | Description |
 |---|---|
@@ -31,8 +44,6 @@
 
 ### Topics file
 
-> **TODO:** confirm fields.
-
 | Field | Description |
 |---|---|
 | `topic_id` | Unique topic identifier |
@@ -41,9 +52,21 @@
 | `narrative` | Which document types can and cannot answer the topic |
 | `weights` | Target distribution over the five evidence categories (sums to 1) |
 
+Identifiers run from 1 to 143 with one gap, topic 35 having been withdrawn
+during annotation.
+
 ### Judgements file
 
-> **TODO:** confirm format (e.g. TREC qrels: `topic_id 0 passage_id label`).
+TREC qrels format, one judgement per line:
+
+```
+topic_id 0 passage_id label
+```
+
+`label` is 1 for relevant and 0 for not relevant. The second column is the
+unused iteration field retained for compatibility with standard evaluation
+tools. Only judged pairs appear; a passage absent from the file is unjudged
+rather than known to be irrelevant.
 
 ## Evidence categories
 
@@ -91,11 +114,19 @@ Documents are split into passages following their natural structure where possib
 
 ## Topics
 
-The 142 topics are based on questions asked by users of the ParliView platform. Each topic has a title, a description, a narrative, and a target distribution over the five evidence categories, giving the proportion of each kind of evidence a good answer would rely on. The target distributions were assigned by expert annotators.
+The 142 topics are based on questions asked by users of the ParliView platform. Each topic has a title, a description, a narrative, and a target distribution over the five evidence categories, giving the proportion of each kind of evidence a good answer would rely on.
+
+The target distributions were assigned independently by three expert annotators familiar with the European Parliament and with this collection, each distributing ten points across the categories for every topic. The released distribution is their mean. Because each annotation is a distribution rather than a label, agreement is measured with Krippendorff's α under a difference function: over the 134 topics all three annotators covered, α = 0.75 taking total variation distance as the difference function, and 0.89 taking squared Euclidean distance. The dominant category is unanimous on 107 of those 134 topics.
 
 ## Relevance judgements
 
-The collection includes binary relevance judgements for 35,500 topic–passage pairs, pooled to depth 250 per topic (TODO: pooling method). Labels were generated with an LLM (OpenAI `gpt-6-luna`) and checked against expert annotation on a sample of pairs.
+The collection includes binary relevance judgements for 35,500 topic–passage pairs, pooled to depth 250 per topic.
+
+> **TODO:** pooling method — which retrieval systems contributed candidates, and at what depth.
+
+Labels were generated with an LLM (OpenAI `gpt-6-luna`) prompted with the topic title, description and narrative together with the passage text. 5,399 pairs (15.2%) are judged relevant, a median of 18 per topic; 12 topics have no relevant passage in their pool and contribute to the category-composition measures but not to relevance-based ones.
+
+The labels were validated against an expert annotator who independently judged the top 20 passages of a stratified sample of topics without sight of the model's labels. Over 160 such judgements, agreement is 85.0% with Cohen's κ = 0.67. Agreement varies by evidence category, and is lowest on topics whose answers rest on what Parliament decided, where a passage discussing a measure is readily mistaken for one that settles it.
 
 ## Original data sources
 
