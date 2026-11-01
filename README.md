@@ -111,4 +111,4 @@ All distributed texts and records are taken from European Parliament sources:
 
 The data is released under the [Creative Commons Attribution 4.0 International (CC BY 4.0)](https://creativecommons.org/licenses/by/4.0/) licence. Source texts are reused under the European Parliament's open data policy. Attribution: © European Union, 2019–2026 – Source: European Parliament. Each passage includes the URL of its source document.
 
-> **TODO:** licence for code, if different.
+The code is released under the [Apache License 2.0](https://www.apache.org/licenses/LICENSE-2.0).
